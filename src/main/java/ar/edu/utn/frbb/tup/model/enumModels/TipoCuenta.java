@@ -1,4 +1,4 @@
-package ar.edu.utn.frbb.tup.model;
+package ar.edu.utn.frbb.tup.model.enumModels;
 
 public enum TipoCuenta {
 

@@ -1,4 +1,4 @@
-package ar.edu.utn.frbb.tup.model.exception;
+package ar.edu.utn.frbb.tup.exception;
 
 public class TipoCuentaAlreadyExistsException extends Exception {
     public TipoCuentaAlreadyExistsException(String message) {

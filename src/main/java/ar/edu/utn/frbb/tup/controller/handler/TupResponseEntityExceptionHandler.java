@@ -1,6 +1,5 @@
 package ar.edu.utn.frbb.tup.controller.handler;
 
-import ar.edu.utn.frbb.tup.model.exception.TipoCuentaAlreadyExistsException;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.HttpStatusCode;
@@ -11,32 +10,72 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
+import ar.edu.utn.frbb.tup.exception.CampoVacioException;
+import ar.edu.utn.frbb.tup.exception.CuentaAlreadyExistsException;
+import ar.edu.utn.frbb.tup.exception.CuentaNoEncontradaException;
+import ar.edu.utn.frbb.tup.exception.NoAlcanzaException;
+import ar.edu.utn.frbb.tup.exception.TipoCuentaAlreadyExistsException;
+import ar.edu.utn.frbb.tup.exception.TipoPersonaNoAceptadoException;
+import ar.edu.utn.frbb.tup.exception.clienteExceptions.ClienteAlreadyExistsException;
+import ar.edu.utn.frbb.tup.exception.clienteExceptions.ClienteMenorDeEdadException;
+import ar.edu.utn.frbb.tup.exception.clienteExceptions.ClienteNoEncontradoException;
+
 @ControllerAdvice
 public class TupResponseEntityExceptionHandler extends ResponseEntityExceptionHandler {
 
-    @ExceptionHandler(value
-            = {TipoCuentaAlreadyExistsException.class, IllegalArgumentException.class})
-    protected ResponseEntity<Object> handleMateriaNotFound(
-            Exception ex, WebRequest request) {
-        String exceptionMessage = ex.getMessage();
+//organizado en base a los status code y el porqué de las exceptions (referencia sacada de stackoverflow, checkear)
+
+
+    //BAD_REQUEST (400)
+    //datos de entrada inválidos o no soportados
+    @ExceptionHandler({TipoPersonaNoAceptadoException.class,  CampoVacioException.class})
+    protected ResponseEntity<Object> handleUnsupportedOrInvalidInputs(Exception ex, WebRequest request) {
+        CustomApiError error = new CustomApiError();// el json que devuelve el error
+        error.setErrorMessage(ex.getMessage());// settea el mensaje que le claves en el json
+        return handleExceptionInternal(ex, error,//aca hace sus chiches
+                new HttpHeaders(), HttpStatus.BAD_REQUEST, request);// aca ponele el status code
+    }
+
+    //BAD_REQUEST (400)
+    //errores relacionados a las reglas de negocio (cliente menor de edad, saldo insuficiente)
+    @ExceptionHandler({IllegalArgumentException.class, ClienteMenorDeEdadException.class, NoAlcanzaException.class})
+    protected ResponseEntity<Object> handleInvalidBusinessRules(Exception ex, WebRequest request) {
         CustomApiError error = new CustomApiError();
-        error.setErrorMessage(exceptionMessage);
+        error.setErrorMessage(ex.getMessage());
         return handleExceptionInternal(ex, error,
                 new HttpHeaders(), HttpStatus.BAD_REQUEST, request);
     }
 
-    @ExceptionHandler(value
-            = { IllegalStateException.class })
-    protected ResponseEntity<Object> handleConflict(
-            RuntimeException ex, WebRequest request) {
-        String exceptionMessage = ex.getMessage();
+    //CONFLICT (409)
+    //conflictos por recursos ya existentes
+    @ExceptionHandler({TipoCuentaAlreadyExistsException.class, CuentaAlreadyExistsException.class, ClienteAlreadyExistsException.class})
+    protected ResponseEntity<Object> handleResourceAlreadyExists(Exception ex, WebRequest request) {
         CustomApiError error = new CustomApiError();
-        error.setErrorCode(1234);
-        error.setErrorMessage(exceptionMessage);
+        error.setErrorMessage(ex.getMessage());
+        return handleExceptionInternal(ex, error,
+                new HttpHeaders(), HttpStatus.CONFLICT, request);
+    }
+
+    //NOT_FOUND (404)
+    //recursos no encontrados (inexistentes)
+    @ExceptionHandler({ClienteNoEncontradoException.class, CuentaNoEncontradaException.class, })
+    protected ResponseEntity<Object> handleResourceNotFound(Exception ex, WebRequest request) {
+        CustomApiError error = new CustomApiError();
+        error.setErrorMessage(ex.getMessage());
         return handleExceptionInternal(ex, error,
                 new HttpHeaders(), HttpStatus.NOT_FOUND, request);
     }
 
+    //NOT_FOUND (404)
+    //errores de estado ilegal
+    @ExceptionHandler({IllegalStateException.class})
+    protected ResponseEntity<Object> handleIllegalState(Exception ex, WebRequest request) {
+        CustomApiError error = new CustomApiError();
+        error.setErrorCode(12354); // Código específico para identificar este error
+        error.setErrorMessage(ex.getMessage());
+        return handleExceptionInternal(ex, error,
+                new HttpHeaders(), HttpStatus.NOT_FOUND, request);
+    }
 
 
     @Override
