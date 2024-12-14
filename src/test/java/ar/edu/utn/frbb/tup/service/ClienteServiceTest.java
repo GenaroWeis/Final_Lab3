@@ -1,8 +1,8 @@
 package ar.edu.utn.frbb.tup.service;
 
 import ar.edu.utn.frbb.tup.controller.ClienteDto;
-import ar.edu.utn.frbb.tup.exception.TipoCuentaAlreadyExistsException;
 import ar.edu.utn.frbb.tup.exception.clienteExceptions.ClienteAlreadyExistsException;
+import ar.edu.utn.frbb.tup.exception.cuentaExceptions.TipoCuentaAlreadyExistsException;
 import ar.edu.utn.frbb.tup.model.Cliente;
 import ar.edu.utn.frbb.tup.model.Cuenta;
 import ar.edu.utn.frbb.tup.model.TipoCuenta;

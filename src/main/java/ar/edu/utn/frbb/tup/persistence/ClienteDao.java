@@ -16,6 +16,11 @@ public class ClienteDao extends AbstractBaseDao{
     @Autowired
     CuentaDao cuentaDao;
 
+    @Override
+    protected String getEntityName() {
+        return "CLIENTE";
+    }
+
     public Cliente find(long dni, boolean loadComplete) {
         if (getInMemoryDatabase().get(dni) == null)
             return null;
@@ -27,6 +32,11 @@ public class ClienteDao extends AbstractBaseDao{
             }
         }
         return cliente;
+    }
+
+    public void save(Cliente cliente) {
+        ClienteEntity entity = new ClienteEntity(cliente);
+        getInMemoryDatabase().put(entity.getId(), entity);
     }
 
     public List<Cliente> findAll() {
@@ -41,13 +51,7 @@ public class ClienteDao extends AbstractBaseDao{
         }
     }
     
-    public void save(Cliente cliente) {
-        ClienteEntity entity = new ClienteEntity(cliente);
-        getInMemoryDatabase().put(entity.getId(), entity);
-    }
+   
 
-    @Override
-    protected String getEntityName() {
-        return "CLIENTE";
-    }
+  
 }

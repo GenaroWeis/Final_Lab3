@@ -1,6 +1,26 @@
 package ar.edu.utn.frbb.tup.model.enumModels;
 
+// logica de tipopersona
 public enum TipoMoneda {
-    PESOS,
-    DOLARES
+    PESOS("P"),
+    DOLARES("D");
+
+    private final String descripcion;
+
+    TipoMoneda(String descripcion) {
+        this.descripcion = descripcion;
+    }
+
+    public String getDescripcion() {
+        return descripcion;
+    }
+
+    public static TipoMoneda fromString(String text) {
+        for (TipoMoneda tipo : TipoMoneda.values()) {
+            if (tipo.descripcion.equalsIgnoreCase(text)) {
+                return tipo;
+            }
+        }
+        throw new IllegalArgumentException("No se encontró un TipoMoneda con la descripción: " + text);
+    }
 }

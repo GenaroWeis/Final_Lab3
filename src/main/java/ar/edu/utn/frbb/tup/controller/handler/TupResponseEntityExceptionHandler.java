@@ -11,14 +11,15 @@ import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
 import ar.edu.utn.frbb.tup.exception.CampoVacioException;
-import ar.edu.utn.frbb.tup.exception.CuentaAlreadyExistsException;
-import ar.edu.utn.frbb.tup.exception.CuentaNoEncontradaException;
 import ar.edu.utn.frbb.tup.exception.NoAlcanzaException;
-import ar.edu.utn.frbb.tup.exception.TipoCuentaAlreadyExistsException;
 import ar.edu.utn.frbb.tup.exception.TipoPersonaNoAceptadoException;
 import ar.edu.utn.frbb.tup.exception.clienteExceptions.ClienteAlreadyExistsException;
 import ar.edu.utn.frbb.tup.exception.clienteExceptions.ClienteMenorDeEdadException;
 import ar.edu.utn.frbb.tup.exception.clienteExceptions.ClienteNoEncontradoException;
+import ar.edu.utn.frbb.tup.exception.cuentaExceptions.CuentaAlreadyExistsException;
+import ar.edu.utn.frbb.tup.exception.cuentaExceptions.CuentaNoEncontradaException;
+import ar.edu.utn.frbb.tup.exception.cuentaExceptions.TipoCuentaAlreadyExistsException;
+import ar.edu.utn.frbb.tup.exception.cuentaExceptions.TipoCuentaNoSoportadaException;
 
 @ControllerAdvice
 public class TupResponseEntityExceptionHandler extends ResponseEntityExceptionHandler {
@@ -28,7 +29,7 @@ public class TupResponseEntityExceptionHandler extends ResponseEntityExceptionHa
 
     //BAD_REQUEST (400)
     //datos de entrada inválidos o no soportados
-    @ExceptionHandler({TipoPersonaNoAceptadoException.class,  CampoVacioException.class})
+    @ExceptionHandler({TipoPersonaNoAceptadoException.class,  CampoVacioException.class, TipoCuentaNoSoportadaException.class, TipoPersonaNoAceptadoException.class})
     protected ResponseEntity<Object> handleUnsupportedOrInvalidInputs(Exception ex, WebRequest request) {
         CustomApiError error = new CustomApiError();// el json que devuelve el error
         error.setErrorMessage(ex.getMessage());// settea el mensaje que le claves en el json
@@ -85,7 +86,6 @@ public class TupResponseEntityExceptionHandler extends ResponseEntityExceptionHa
             error.setErrorMessage(ex.getMessage());
             body = error;
         }
-
         return new ResponseEntity(body, headers, status);
     }
 

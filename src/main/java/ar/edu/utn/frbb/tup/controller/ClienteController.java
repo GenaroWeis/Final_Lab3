@@ -35,7 +35,7 @@ public class ClienteController {
     @PostMapping//maneja solicitudes post
     public Cliente crearCliente(@RequestBody ClienteDto clienteDto) throws ClienteMenorDeEdadException, ClienteAlreadyExistsException, CampoVacioException, TipoPersonaNoAceptadoException {
         clienteValidator.validate(clienteDto);
-        return clienteService.darDeAltaCliente(clienteDto);
+        return clienteService.CrearCliente(clienteDto);
     }
 
     @GetMapping("/{dni}")//maneja solicitudes get

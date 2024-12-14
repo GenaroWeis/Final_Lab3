@@ -22,7 +22,7 @@ public class Cuenta {
         this.fechaCreacion = LocalDateTime.now();
     }
     
-    //CONSTRUCTOR DESDE EL DAO
+    //CONSTRUCTOR DESDE EL DTO
     public Cuenta(CuentaDto cuentaDto){
         this.tipoCuenta = TipoCuenta.fromString(cuentaDto.getTipoCuenta());
         this.moneda = TipoMoneda.fromString(cuentaDto.getMoneda());
