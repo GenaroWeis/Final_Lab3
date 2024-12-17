@@ -9,9 +9,9 @@ import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
-
 import ar.edu.utn.frbb.tup.exception.CampoVacioException;
 import ar.edu.utn.frbb.tup.exception.NoAlcanzaException;
+import ar.edu.utn.frbb.tup.exception.PrestamoNoEncontradoException;
 import ar.edu.utn.frbb.tup.exception.TipoPersonaNoAceptadoException;
 import ar.edu.utn.frbb.tup.exception.clienteExceptions.ClienteAlreadyExistsException;
 import ar.edu.utn.frbb.tup.exception.clienteExceptions.ClienteMenorDeEdadException;
@@ -20,16 +20,17 @@ import ar.edu.utn.frbb.tup.exception.cuentaExceptions.CuentaAlreadyExistsExcepti
 import ar.edu.utn.frbb.tup.exception.cuentaExceptions.CuentaNoEncontradaException;
 import ar.edu.utn.frbb.tup.exception.cuentaExceptions.TipoCuentaAlreadyExistsException;
 import ar.edu.utn.frbb.tup.exception.cuentaExceptions.TipoCuentaNoSoportadaException;
+import ar.edu.utn.frbb.tup.exception.cuentaExceptions.TipoMonedaNoSoportadaException;
+
 
 @ControllerAdvice
 public class TupResponseEntityExceptionHandler extends ResponseEntityExceptionHandler {
 
 //organizado en base a los status code y el porqué de las exceptions (referencia sacada de stackoverflow, checkear)
 
-
     //BAD_REQUEST (400)
     //datos de entrada inválidos o no soportados
-    @ExceptionHandler({TipoPersonaNoAceptadoException.class,  CampoVacioException.class, TipoCuentaNoSoportadaException.class, TipoPersonaNoAceptadoException.class})
+    @ExceptionHandler({TipoMonedaNoSoportadaException.class, TipoPersonaNoAceptadoException.class,  CampoVacioException.class, TipoCuentaNoSoportadaException.class,})
     protected ResponseEntity<Object> handleUnsupportedOrInvalidInputs(Exception ex, WebRequest request) {
         CustomApiError error = new CustomApiError();// el json que devuelve el error
         error.setErrorMessage(ex.getMessage());// settea el mensaje que le claves en el json
@@ -59,7 +60,7 @@ public class TupResponseEntityExceptionHandler extends ResponseEntityExceptionHa
 
     //NOT_FOUND (404)
     //recursos no encontrados (inexistentes)
-    @ExceptionHandler({ClienteNoEncontradoException.class, CuentaNoEncontradaException.class, })
+    @ExceptionHandler({PrestamoNoEncontradoException.class, ClienteNoEncontradoException.class, CuentaNoEncontradaException.class, })
     protected ResponseEntity<Object> handleResourceNotFound(Exception ex, WebRequest request) {
         CustomApiError error = new CustomApiError();
         error.setErrorMessage(ex.getMessage());

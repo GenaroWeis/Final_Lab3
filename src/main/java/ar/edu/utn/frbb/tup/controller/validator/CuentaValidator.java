@@ -1,11 +1,13 @@
 package ar.edu.utn.frbb.tup.controller.validator;
 
+import org.springframework.stereotype.Component;
 import ar.edu.utn.frbb.tup.controller.dto.CuentaDto;
 import ar.edu.utn.frbb.tup.exception.CampoVacioException;
 import ar.edu.utn.frbb.tup.exception.cuentaExceptions.TipoCuentaNoSoportadaException;
 import ar.edu.utn.frbb.tup.exception.cuentaExceptions.TipoMonedaNoSoportadaException;
 
-public class CuentaValidator {// en base al validate de cliente
+@Component
+public class CuentaValidator {
     
     //VALIDACION GENERAL (valida todos los campos)
     public void validate(CuentaDto cuentaDto) throws TipoCuentaNoSoportadaException, TipoMonedaNoSoportadaException, CampoVacioException {

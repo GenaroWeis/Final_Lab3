@@ -21,6 +21,6 @@ public enum TipoMoneda {
                 return tipo;
             }
         }
-        throw new IllegalArgumentException("No se encontró un TipoMoneda con la descripción: " + text);
+        throw new IllegalArgumentException("Error: No se encontró un TipoMoneda con la descripción: " + text);
     }
 }

@@ -3,9 +3,7 @@ package ar.edu.utn.frbb.tup.controller.validator;
 import ar.edu.utn.frbb.tup.controller.dto.ClienteDto;
 import ar.edu.utn.frbb.tup.exception.CampoVacioException;
 import ar.edu.utn.frbb.tup.exception.TipoPersonaNoAceptadoException;
-
 import org.springframework.stereotype.Component;
-
 import java.time.LocalDate;
 
 @Component
@@ -18,6 +16,7 @@ public class ClienteValidator {
         validateDatosCompletos(clienteDto); //no vacios
         validateTipoPersona(clienteDto);//tipo persona
         validateFechaNacimiento(clienteDto);//fecha de nacimiento
+        validateDni(clienteDto); //dni
     }
 
     //VALIDACIONES CAMPOS NO VACIOS
@@ -52,6 +51,14 @@ public class ClienteValidator {
             LocalDate.parse(clienteDto.getFechaNacimiento());
         } catch (Exception e) {
             throw new IllegalArgumentException("Error: el formato de fecha es erroneo");
+        }
+    }
+    
+   // VALIDACION DNI CORRECTO
+    private void validateDni(ClienteDto clienteDto) {
+        long dni = clienteDto.getDni();
+        if (dni < 10_000_000 || dni > 99_999_999) { // Validar rango
+            throw new IllegalArgumentException("Error: El DNI debe tener 8 dígitos y estar entre 10.000.000 y 99.999.999.");
         }
     }
 }

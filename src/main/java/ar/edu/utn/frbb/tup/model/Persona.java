@@ -4,10 +4,12 @@ import java.time.LocalDate;
 import java.time.Period;
 
 public class Persona {
+
     private String nombre;
     private String apellido;
     private long dni;
     private LocalDate fechaNacimiento;
+
 
     public Persona() {}
     public Persona(long dni, String apellido, String nombre, String fechaNacimiento) {
@@ -16,6 +18,7 @@ public class Persona {
         this.nombre = nombre;
         this.fechaNacimiento = LocalDate.parse(fechaNacimiento);
     }
+
 
     public String getNombre() {
         return nombre;

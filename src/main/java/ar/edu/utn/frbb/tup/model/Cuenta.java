@@ -2,38 +2,37 @@ package ar.edu.utn.frbb.tup.model;
 
 import java.time.LocalDateTime;
 import java.util.Random;
-
 import ar.edu.utn.frbb.tup.controller.dto.CuentaDto;
 import ar.edu.utn.frbb.tup.model.enumModels.TipoCuenta;
 import ar.edu.utn.frbb.tup.model.enumModels.TipoMoneda;
 
 public class Cuenta {
-    private long numeroCuenta;// -
-    private LocalDateTime fechaCreacion;// -
-    private long balance;// -
+
+    private long numeroCuenta;
+    private LocalDateTime fechaCreacion;
+    private long balance;
     private TipoCuenta tipoCuenta;
     private long dniTitular;
     private TipoMoneda moneda;
 
-    // CONSTRUCTOR
+
+    // Constructor
     public Cuenta() {
         this.numeroCuenta = new Random().nextLong();
         this.balance = 0;
         this.fechaCreacion = LocalDateTime.now();
     }
     
-    //CONSTRUCTOR DESDE EL DTO
+    //Constructor: DTO
     public Cuenta(CuentaDto cuentaDto){
+        this.numeroCuenta = Math.abs(new Random().nextLong() % 1_000_000_000L) + 1_000_000_000L;
+        this.balance = 0;
+        this.fechaCreacion = LocalDateTime.now(); 
         this.tipoCuenta = TipoCuenta.fromString(cuentaDto.getTipoCuenta());
         this.moneda = TipoMoneda.fromString(cuentaDto.getMoneda());
         this.dniTitular = cuentaDto.getDniTitular();
     }
 
-    //CONSTRUCTOR CON CUENTA Y MONEDA
-    public Cuenta (TipoCuenta tipoCuenta, TipoMoneda moneda) {
-        this.tipoCuenta = tipoCuenta;
-        this.moneda = moneda;
-    }
 
     public TipoCuenta getTipoCuenta() {
         return tipoCuenta;
@@ -87,6 +86,5 @@ public class Cuenta {
     public long getNumeroCuenta() {
         return numeroCuenta;
     }
-
 
 }

@@ -17,6 +17,8 @@ public class ClienteEntity extends BaseEntity {
     private final LocalDate fechaNacimiento;
     private List<Long> cuentas;
 
+
+    // conversion de Cliente a ClienteEntity
     public ClienteEntity(Cliente cliente) {
         super(cliente.getDni());
         this.tipoPersona = cliente.getTipoPersona() != null ? cliente.getTipoPersona().getDescripcion() : null;
@@ -32,6 +34,8 @@ public class ClienteEntity extends BaseEntity {
         }
     }
 
+ 
+    // conversion de ClienteEntity a Cliente
     public Cliente toCliente() {
         Cliente cliente = new Cliente();
         cliente.setDni(this.getId());

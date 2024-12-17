@@ -9,9 +9,7 @@ import ar.edu.utn.frbb.tup.exception.clienteExceptions.ClienteMenorDeEdadExcepti
 import ar.edu.utn.frbb.tup.exception.clienteExceptions.ClienteNoEncontradoException;
 import ar.edu.utn.frbb.tup.model.Cliente;
 import ar.edu.utn.frbb.tup.service.ClienteService;
-
 import java.util.List;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -23,27 +21,31 @@ import org.springframework.web.bind.annotation.RestController;
 //no usas runtimeexceptions, asi que tenes que declara con throws acordate
 
 @RestController//te transforma la clase en una api rest (get, post)
-@RequestMapping("/cliente")//rutas
+@RequestMapping("/cliente")
 public class ClienteController {
 
     //inyecta dependencias
     @Autowired
     private ClienteService clienteService;
+
     @Autowired
     private ClienteValidator clienteValidator;
 
-    @PostMapping//maneja solicitudes post
+    // POST: CREAR CLIENTE
+    @PostMapping
     public Cliente crearCliente(@RequestBody ClienteDto clienteDto) throws ClienteMenorDeEdadException, ClienteAlreadyExistsException, CampoVacioException, TipoPersonaNoAceptadoException {
         clienteValidator.validate(clienteDto);
         return clienteService.CrearCliente(clienteDto);
     }
 
+    // GET: BUSCAR CLIENTE POR DNI
     @GetMapping("/{dni}")//maneja solicitudes get
     public Cliente buscarClientePorDni(@PathVariable long dni) throws ClienteNoEncontradoException {
         return clienteService.buscarClientePorDni(dni);
     }
 
-    @GetMapping("/all")//maneja solicitudes get
+    // GET: BUSCAR TODOS LOS CLIENTES
+    @GetMapping("/all")
     public List<Cliente> buscarTodosLosClientes() {
         return clienteService.buscarTodosLosClientes();
     }

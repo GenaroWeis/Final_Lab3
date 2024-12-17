@@ -22,6 +22,6 @@ public enum TipoPersona {
                 return tipo;// Retorna el tipo de moneda correspondiente si coincide
             }
         }
-        throw new IllegalArgumentException("No se pudo encontrar un TipoPersona con la descripción: " + text);
+        throw new IllegalArgumentException("Error: No se pudo encontrar un TipoPersona con la descripción: " + text);
     }
 }

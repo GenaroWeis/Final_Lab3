@@ -7,7 +7,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-
 import ar.edu.utn.frbb.tup.controller.dto.CuentaDto;
 import ar.edu.utn.frbb.tup.controller.validator.CuentaValidator;
 import ar.edu.utn.frbb.tup.exception.CampoVacioException;
@@ -22,20 +21,23 @@ import ar.edu.utn.frbb.tup.service.CuentaService;
 
 @RestController
 @RequestMapping("/cuenta")
-public class CuentaController {// logica basada en cliente controller
+public class CuentaController {
 
+    // inyecta dependencias
     @Autowired
     private CuentaService cuentaService;
 
     @Autowired
     private CuentaValidator cuentaValidator;
 
+    // POST: CREAR CUENTA
     @PostMapping
     public Cuenta crearCuenta(@RequestBody CuentaDto cuentaDto) throws TipoCuentaNoSoportadaException, TipoMonedaNoSoportadaException, TipoCuentaAlreadyExistsException, ClienteNoEncontradoException, CuentaAlreadyExistsException, CampoVacioException {
         cuentaValidator.validate(cuentaDto);
         return cuentaService.CrearCuenta(cuentaDto);
     }
 
+    // GET: BUSCAR CUENTA POR NUMERO DE CUENTA
     @GetMapping("/{numeroCuenta}")
     public Cuenta buscarCuenta(@PathVariable long numeroCuenta) throws CuentaNoEncontradaException {
         return cuentaService.find(numeroCuenta);
