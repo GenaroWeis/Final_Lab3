@@ -22,12 +22,17 @@ public class CreditCheckService {
         if (!esDniValido(dni)) {
             throw new IllegalArgumentException("Error: DNI inválido. Debe estar entre " + MIN_DNI + " y " + MAX_DNI + " y tener 8 dígitos.");
         }
-        return random.nextDouble() >= PROBABILIDAD_RECHAZO;
+        return getRandomDouble() >= PROBABILIDAD_RECHAZO;
     }
 
     //VERIFICA SI EL DNI ES VALIDO
-    private boolean esDniValido(long dni) {
-        return dni >= MIN_DNI && dni <= MAX_DNI;
+    protected boolean esDniValido(long dni) {
+    return dni >= MIN_DNI && dni <= MAX_DNI;
+    }
+
+    //OBTENER UN DOUBLE RANDOM
+    protected double getRandomDouble() {
+        return random.nextDouble();
     }
 }
 
